@@ -65,7 +65,7 @@ export default {
       </table>
     </div>
     <div class="col-sm-5 col-md-5 col-lg-5">
-      <h2 v-if ="grupSeleccionat"> Alumnos grupo {{ grupSeleccionat?.nom }}</h2>
+      <h2 v-if ="grupSeleccionat">Alumnos grupo {{ grupSeleccionat?.nom }}</h2>
       <AlumneItem v-if="grupSeleccionat" />
       <h3 v-else>Selecciona un grupo</h3>
     </div>

@@ -6,6 +6,19 @@ export default {
         ...mapState(useStore, ['alumnos']),
     },
     methods: {
+        ...mapActions(useStore, ['eliminarAlumno','afegirAlumneEmail']),
+        async eliminarAlumneLocal(id){
+            if(confirm("Seguro que quieres eliminar el alumno?")){
+                await this.eliminarAlumno(id);
+            }
+        },
+        voreAlumne(id){
+            this.$router.push(`/vore-alumno/${id}`);
+        },
+        afegirAlumne(alumne){
+            this.$router.push('send-email');
+            this.afegirAlumneEmail(alumne);
+        }
     },
 }
 </script>
@@ -23,8 +36,14 @@ export default {
             <td>{{ alumne.nia }}</td>
             <td>{{ alumne.nom }}</td>
             <td>
-                <button class="btn btn-sm" title="Editar alumno">
-                    <i class="bi bi-pencil"></i>
+                <button class="btn btn-sm" @click="voreAlumne(alumne.id)" title="Ver alumno">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class ="btn btn-sm" @click="eliminarAlumneLocal(alumne.id)">Eliminar
+                    <i class="bi bi-trash"></i>
+                </button>
+                <button class ="btn btn-sm" @click="afegirAlumne(alumne)">Enviar email
+                    <i class="bi bi-envelope"></i>
                 </button>
             </td>
         </tr>

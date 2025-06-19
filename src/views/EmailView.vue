@@ -13,14 +13,36 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Aquí irá un TR para cada alumno, casi igual al del subcomponente -->
+          <tr v-for="alumne in alumnosEnviarEmail" :key="alumne.id">
+            <td>{{ alumne.id }}</td>
+            <td>{{ alumne.nia }}</td>
+            <td>{{ alumne.nom }}</td>
+            <td>{{ alumne.grup }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" @click="eliminarEmailList(alumne.id)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
-      <button>Enviar email</button>
+      <button @click="enviarEmails()" class="btn btn-primary">Enviar email</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { useStore } from '@/stores/store';
+import { mapActions, mapState } from 'pinia';
+export default {
+  async mounted() {
+    await this.carregarLlistaEmails();
+  },
+  computed:{
+    ...mapState(useStore,['alumnosEnviarEmail'])
+  },
+  methods: {
+  ...mapActions(useStore, ['carregarLlistaEmails','eliminarEmailList','enviarEmail']),
+  }
+};
 </script>

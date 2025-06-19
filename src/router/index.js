@@ -27,12 +27,19 @@ const router = createRouter({
       path: '/send-email',
       name: 'send-email',
       component: EmailView,
-    },{
-      path: '/alumno/:idAlumno',
-      name: 'alumno',
+    },
+    {
+      path: '/vore-alumno/:idAlumno',
+      name: 'vore-alumno',
       component: AlumnoView,
       props: true
     },
+    {
+      path: '/editar-grup/:idGrupo',
+      name: 'editar-grup',
+      component: GroupForm,
+      props: true
+    }
   ],
 })
 

@@ -9,6 +9,7 @@ export const useStore = defineStore('store', {
             groups: [],
             alumnos: [],
             familias: [],
+            alumnosEnviarEmail: []
         }
     
     },
@@ -25,6 +26,37 @@ export const useStore = defineStore('store', {
         const response = await axios.get(`${API_URL}/familias`);
         this.familias = response.data;
       },
-      
+      async eliminarAlumno(id){
+        await axios.delete(`${API_URL}/alumnos/${id}`);
+        this.alumnos = this.alumnos.filter(alumne => alumne.id !== id);
+      },
+      async getAlumne(id){
+        const response = await axios.get(`${API_URL}/alumnos/${id}`);
+        return response.data;
+      },
+      carregarLlistaEmails(){
+        const emailsGuardats = localStorage.getItem('emails');
+        //O Array buit o el que ens torna el localstorage
+        this.alumnosEnviarEmail = emailsGuardats ? JSON.parse(emailsGuardats) : [];
+      },
+      afegirAlumneEmail(alumne){
+        this.alumnosEnviarEmail.push(alumne);
+        localStorage.setItem('emails', JSON.stringify(this.alumnosEnviarEmail));
+      },
+      eliminarEmailList(id){
+        if(confirm("Seguro que quieres eliminar el alumno?")){
+          this.alumnosEnviarEmail = this.alumnosEnviarEmail.filter(alumne => alumne.id !== id);
+          localStorage.setItem('emails', JSON.stringify(this.alumnosEnviarEmail));
+        }
+      },
+      enviarEmail(){
+        alert('Emails enviats');
+        this.alumnosEnviarEmail = [];
+        localStorage.setItem('emails', JSON.stringify(this.alumnosEnviarEmail));
+      },
+      async afegirGrup(grup){
+        const response = await axios.post(`${API_URL}/grupos`, grup);
+        this.groups.push(response.data);
+      }
     },
 })
