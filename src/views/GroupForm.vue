@@ -2,28 +2,28 @@
   <div class="row">
     <Form @submit="onSubmit" :validation-schema="schema">
       <fieldset>
-        <legend>Editar o Añadir grupo</legend>
+        <legend> {{ idGroup ? 'Editar Grupo' : 'Nuevo Grupo' }}</legend>
 
         <div class="form-group">
           <label>ID:</label>
-          <Field name="id" type="text" class="form-control" :disabled="true" />
+          <Field name="id" type="text" v-model="formulari.id" class="form-control" :disabled="true" />
         </div>
 
         <div class="form-group">
           <label>Código:</label>
-          <Field name="codi" type="text" class="form-control" />
+          <Field name="codi" type="text" v-model="formulari.codi" class="form-control"/>
           <ErrorMessage name="codi" class="text-danger" />
         </div>
 
         <div class="form-group">
           <label>Nombre:</label>
-          <Field name="nom" type="text" class="form-control" />
+          <Field name="nom" type="text" v-model="formulari.nom" class="form-control" />
           <ErrorMessage name="nom" class="text-danger" />
         </div>
 
         <div class="form-group">
           <label>Familia:</label>
-          <Field name="familia" as="select" class="form-control">
+          <Field name="familia" as="select" v-model="formulari.familia" class="form-control">
             <option value="">--- Escoge familia ---</option>
             <option v-for="familia in familias" :key="familia.id" :value="familia.id">
               {{ familia.nom }}
@@ -36,7 +36,7 @@
           <label>Grado:</label><br />
 
           <div class="form-check form-check-inline">
-            <Field name="grau" type="radio" value="M" class="form-check-input" id="grauM" />
+            <Field name="grau" type="radio" value="M" v-model="formulari.grau" class="form-check-input" id="grauM" />
             <label class="form-check-label" for="grauM">Mitjà</label>
           </div>
 
@@ -70,18 +70,19 @@ export default {
     ...mapState(useStore, ['groups','familias']),
   },
   methods: {
-    ...mapActions(useStore,['carregarFamilias','afegirGrup']),
+    ...mapActions(useStore,['carregarFamilias','afegirGrup','editarGrup']),
     async onSubmit(values){
-      try{
-        await this.afegirGrup(values);
+      if(this.idGroup){
+        await this.editarGrup(this.formulari);
         this.$router.push('/grupos');
-      } catch (error){
-        alert(error);
-        console.log(error)
+      } else {
+        await this.afegirGrup(this.formulari);
+        this.$router.push('/grupos');
       }
     },
     carregarFormulariEdit(){
-      const grup = this.groups.find(group => group.id == this.idGroup);
+      const grup = this.groups.find(group => group.id == this.idGroup) || {};
+      this.formulari.id = grup.id;
       this.formulari.codi = grup.codi;
       this.formulari.nom = grup.nom;
       this.formulari.familia = grup.familia;
@@ -104,6 +105,9 @@ export default {
     });
     return {
       schema,
+      formulari: {
+
+      }
     };
   },
   props: {

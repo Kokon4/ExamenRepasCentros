@@ -19,6 +19,9 @@ export default {
     async mostrarAlumnos(group){
       this.grupSeleccionat = group;
       await this.carregarAlumnosGrupo(group.id);
+    },
+    editarGrupoLocal(id){
+      this.$router.push(`/editar-grup/${id}`)
     }
   },
   computed: {
@@ -56,7 +59,7 @@ export default {
             <td>{{ group.grau }}</td>
             <td>{{ mostrarNomNoId(group.familia) }}</td>
             <td>
-              <button class="btn btn-sm" title="Editar grupo">
+              <button class="btn btn-sm" title="Editar grupo" @click="editarGrupoLocal(group.id)">
                 <i class="bi bi-pencil"></i>
               </button>
             </td>

@@ -42,7 +42,7 @@ export default {
     ...mapState(useStore,['alumnosEnviarEmail'])
   },
   methods: {
-  ...mapActions(useStore, ['carregarLlistaEmails','eliminarEmailList','enviarEmail']),
+  ...mapActions(useStore, ['carregarLlistaEmails','eliminarEmailList','enviarEmails']),
   }
 };
 </script>

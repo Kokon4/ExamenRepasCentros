@@ -35,7 +35,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/editar-grup/:idGrupo',
+      path: '/editar-grup/:idGroup',
       name: 'editar-grup',
       component: GroupForm,
       props: true

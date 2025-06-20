@@ -11,7 +11,6 @@ export const useStore = defineStore('store', {
             familias: [],
             alumnosEnviarEmail: []
         }
-    
     },
     actions:{
       async carregarGrupos(){
@@ -57,6 +56,21 @@ export const useStore = defineStore('store', {
       async afegirGrup(grup){
         const response = await axios.post(`${API_URL}/grupos`, grup);
         this.groups.push(response.data);
+      },
+      async editarGrup(grup){
+        const response = await axios.put(`${API_URL}/grupos/${grup.id}`, grup);
+        const index = this.groups.findIndex(grup => grup.id === response.data.id);
+        this.groups.splice(index, 1, response.data);
+      },
+      async editarNomGrup(grup){
+        //En payload enviem el camp volem cambiar
+        const payload = {nombre: grup.nombre};
+        //Fem la peticio
+        const response = await axios.put(`${API_URL}/grupos/${grup.id}`, payload);
+        //Agafem el index
+        const index = this.groups.findIndex(grup => grup.id === response.data.id);
+        // I fem el splice
+        this.groups.splice(index, 1, response.data);
       }
     },
 })
